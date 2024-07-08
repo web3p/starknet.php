@@ -71,4 +71,19 @@ class Key {
         $publicKey = self::getPublicKey($privateKey, true, '');
         return '0x' . preg_replace('/^0+/', '', $publicKey->getX()->toString(16));
     }
+
+    /**
+     * ethSigToPrivate
+     * 
+     * @param string $sig
+     * @return string
+     */
+    public static function ethSigToPrivate ($sig)
+    {
+        $sig = Utils::stripZeroPrefix($sig);
+        if (strlen($sig) !== 130) {
+            throw new Exception('Wrong ethereum signature');
+        }
+        return self::grindKey(substr($sig, 0, 64));
+    }
 }
