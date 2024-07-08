@@ -11,8 +11,8 @@
 namespace StarkNet\Crypto;
 
 use Elliptic\EC;
-use StarkNet\Constants;
 use Elliptic\Curve\PresetCurve;
+use StarkNet\Constants;
 
 class Curve
 {

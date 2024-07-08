@@ -18,19 +18,24 @@ class Constants
 {
     public static function ZERO()
     {
-        return Utils::toBN(0);
+        return Utils::toBn(0);
     }
     public static function ONE()
     {
-        return Utils::toBN(1);
+        return Utils::toBn(1);
     }
     public static function TWO()
     {
-        return Utils::toBN(2);
+        return Utils::toBn(2);
     }
     public static function MASK_250()
     {
-        return Utils::toBN('1809251394333065553493296640760748560207343510400633813116524750123642650623');
+        return Utils::toBn('1809251394333065553493296640760748560207343510400633813116524750123642650623');
+    }
+
+    public static function MASK_256()
+    {
+        return Utils::toBn('115792089237316195423570985008687907853269984665640564039457584007913129639936');
     }
 
     const FIELD_PRIME = '800000000000011000000000000000000000000000000000000000000000001';

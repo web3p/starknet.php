@@ -15,7 +15,8 @@ use StarkNet\Constants;
 use StarkNet\Utils;
 use StarkNet\Crypto\Curve;
 
-class PedersenHash {
+class PedersenHash
+{
     /**
      * hash
      * pedersen hash

@@ -15,7 +15,8 @@ use StarkNet\Constants;
 use StarkNet\Utils;
 use StarkNet\Crypto\Curve;
 
-class FastPedersenHash {
+class FastPedersenHash
+{
     public const LOW_PART_BITS = 248;
     
     // 2 ** 248 - 1
