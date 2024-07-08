@@ -13,7 +13,6 @@ namespace StarkNet\Crypto;
 use Exception;
 use StarkNet\Constants;
 use StarkNet\Utils;
-use BN\BN;
 
 class Key {
     /**
@@ -25,7 +24,7 @@ class Key {
      * generation on mainnet.
      * 
      * @param BigNumber $keySeed
-     * @return BigNumber
+     * @return string
      */
     public static function grindKey ($keySeed)
     {
@@ -38,13 +37,11 @@ class Key {
             $key = Utils::toBn(\hash('sha256', $msg, false));
             if ($key->compare($maxAllowedValue) < 0) {
                 $result = $key->divide($ecOrder);
-                // normalize the bignumber
-                return new BN($result[1]->toString());
+                return $result[1]->toHex();
             }
             if ($i === 100000) {
                 throw new Exception('grindKey is broken: tried 100k vals');
             }
         }
-        return $maxAllowedValue;
     }
 }
