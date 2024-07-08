@@ -16,11 +16,20 @@ use StarkNet\Utils;
 use StarkNet\Crypto\Curve;
 
 class PedersenHash {
-    public static function hash($elements) {
-        return self::pedersen_hash_as_point($elements);
+    /**
+     * hash
+     * pedersen hash
+     * 
+     * @param array $elements
+     * @return BigNumber pedersen hash of the elements
+     */
+    public static function hash($elements)
+    {
+        return self::pedersenHashAsPoint($elements);
     }
 
-    public static function pedersen_hash_as_point($elements) {
+    private static function pedersenHashAsPoint($elements)
+    {
         $points = Curve::constantPoints();
         $point = $points[0];
         foreach ($elements as $i => $ox) {
@@ -38,6 +47,6 @@ class PedersenHash {
                 $x = $x->bitwise_rightShift(1);
             }
         }
-        return $point->getX()->toString(16);
+        return $point->getX();
     }
 }

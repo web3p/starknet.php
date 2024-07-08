@@ -16,6 +16,11 @@ use Elliptic\Curve\PresetCurve;
 
 class Curve
 {
+    /**
+     * ec
+     * 
+     * @return EC
+     */
     public static function ec()
     {
         $sha256 = [ "blockSize" => 512, "outSize" => 256, "hmacStrength" => 192, "padLength" => 64, "algo" => 'sha256' ];
@@ -32,6 +37,11 @@ class Curve
           )));
     }
 
+    /**
+     * constantPoints
+     * 
+     * @return array array of constant points
+     */
     public static function constantPoints()
     {
         return array_map(function ($x) {
@@ -39,6 +49,13 @@ class Curve
         }, Constants::CONSTANT_POINTS);
     }
 
+    /**
+     * sign
+     * 
+     * @param string $pk
+     * @param string $message
+     * @return array signature
+     */
     public static function sign(string $pk, string $message)
     {
         $messageBn = Numbers::toBN(Encode::addHexPrefix($message));
@@ -49,6 +66,13 @@ class Curve
         return [$signature->r, $signature->s];
     }
 
+    /**
+     * fixHex
+     * TODO: remove this
+     * 
+     * @param string $val
+     * @return string
+     */
     public static function fixHex(string $hex)
     {
         $hex = preg_replace('/^0x0*/', '', $hex);
