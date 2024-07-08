@@ -107,17 +107,17 @@ class UtilsTest extends TestCase
     }
 
     /**
-     * testStripZero
+     * testStripZeroPrefix
      *
      * @return void
      */
-    public function testStripZero()
+    public function testStripZeroPrefix()
     {
-        $str = Utils::stripZero($this->testHex);
+        $str = Utils::stripZeroPrefix($this->testHex);
 
         $this->assertEquals($str, $this->testHex);
 
-        $str = Utils::stripZero('0x' . $this->testHex);
+        $str = Utils::stripZeroPrefix('0x' . $this->testHex);
 
         $this->assertEquals($str, $this->testHex);
     }

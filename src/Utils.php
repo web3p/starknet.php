@@ -107,12 +107,12 @@ class Utils
     }
 
     /**
-     * stripZero
+     * stripZeroPrefix
      * 
      * @param string $value
      * @return string
      */
-    public static function stripZero($value)
+    public static function stripZeroPrefix($value)
     {
         if (self::isZeroPrefixed($value)) {
             $count = 1;
@@ -233,7 +233,7 @@ class Utils
                 $negative1 = new BigNumber(-1);
             }
             if (self::isZeroPrefixed($number) || preg_match('/^[0-9a-f]+$/i', $number) === 1) {
-                $number = self::stripZero($number);
+                $number = self::stripZeroPrefix($number);
                 $bn = new BigNumber($number, 16);
             } elseif (empty($number)) {
                 $bn = new BigNumber(0);
