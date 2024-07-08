@@ -7,6 +7,7 @@ use stdClass;
 use Test\TestCase;
 use phpseclib\Math\BigInteger as BigNumber;
 use StarkNet\Utils;
+use StarkNet\Constants;
 
 class UtilsTest extends TestCase
 {
@@ -249,5 +250,18 @@ class UtilsTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $bn = Utils::toBn(new stdClass);
+    }
+
+    /**
+     * testKeccak
+     * 
+     * @return void
+     */
+    public function testKeccak()
+    {
+        $result = Utils::keccak('hello');
+        $this->assertEquals('8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8', $result);
+        $bn = Utils::toBn($result);
+        $this->assertTrue($bn->compare(Constants::MASK_250()) < 0);
     }
 }

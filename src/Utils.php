@@ -262,4 +262,15 @@ class Utils
         }
         return intval(self::toBn($hexNumber)->toString());
     }
+
+    /**
+     * keccak
+     * 
+     * @param string $value
+     * @return string
+     */
+    public static function keccak($value)
+    {
+        return self::toBn(self::sha3($value))->bitwise_and(Constants::MASK_250())->toHex();
+    }
 }
