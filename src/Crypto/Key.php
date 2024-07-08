@@ -44,4 +44,31 @@ class Key {
             }
         }
     }
+
+    /**
+     * getPublicKey
+     * 
+     * @param string $privateKey
+     * @param bool $isCompressed
+     * @param string $enc
+     * @return string
+     */
+    public static function getPublicKey ($privateKey, $isCompressed = false, $enc = 'hex')
+    {
+        $ec = Curve::ec();
+        $keyPair = $ec->keyFromPrivate($privateKey);
+        return $keyPair->getPublic($isCompressed, $enc);
+    }
+
+     /**
+     * getStarkKey
+     * 
+     * @param string $privateKey
+     * @return string
+     */
+    public static function getStarkKey ($privateKey)
+    {
+        $publicKey = self::getPublicKey($privateKey, true, '');
+        return '0x' . preg_replace('/^0+/', '', $publicKey->getX()->toString(16));
+    }
 }
