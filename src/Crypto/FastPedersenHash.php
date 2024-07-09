@@ -36,7 +36,7 @@ class FastPedersenHash
     private static function processSingleElement($element, $p1, $p2)
     {
         $cmpZero = $element->compare(Constants::ZERO());
-        assert($cmpZero >= 0 && $element->compare(Utils::toBN('0x' . Constants::FIELD_PRIME)) < 0, "Element value is out of range");
+        assert($cmpZero >= 0 && $element->compare(Utils::toBn('0x' . Constants::FIELD_PRIME)) < 0, "Element value is out of range");
         $highNibble = $element->bitwise_rightShift(self::LOW_PART_BITS)->toHex();
         $lowPart = $element->bitwise_and(self::LOW_BITS_MASK())->toHex();
         if ($highNibble === '') {
