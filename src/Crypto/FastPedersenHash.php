@@ -14,9 +14,12 @@ namespace StarkNet\Crypto;
 use StarkNet\Constants;
 use StarkNet\Utils;
 use StarkNet\Crypto\Curve;
+use StarkNet\Crypto\Hash;
 
 class FastPedersenHash
 {
+    use Hash;
+
     public const LOW_PART_BITS = 248;
     
     // 2 ** 248 - 1

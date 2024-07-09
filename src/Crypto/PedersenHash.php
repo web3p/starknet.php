@@ -14,19 +14,23 @@ namespace StarkNet\Crypto;
 use StarkNet\Constants;
 use StarkNet\Utils;
 use StarkNet\Crypto\Curve;
+use StarkNet\Crypto\Hash;
 
 class PedersenHash
 {
+    use Hash;
+    
     /**
      * hash
      * pedersen hash
      * 
-     * @param array $elements
+     * @param mixed $x
+     * @param mixed $y
      * @return BigNumber pedersen hash of the elements
      */
-    public static function hash($elements)
+    public static function hash($x, $y)
     {
-        return self::pedersenHashAsPoint($elements);
+        return self::pedersenHashAsPoint([$x, $y]);
     }
 
     private static function pedersenHashAsPoint($elements)

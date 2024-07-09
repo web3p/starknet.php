@@ -9,6 +9,6 @@
     <directory suffix="Test.php">./test/unit</directory>
   </testsuite>
   <php>
-    <ini name="memory_limit" value="200M"/>
+    <ini name="memory_limit" value="250M"/>
   </php>
 </phpunit>

@@ -16,6 +16,7 @@ use InvalidArgumentException;
 use stdClass;
 use kornrunner\Keccak;
 use phpseclib\Math\BigInteger as BigNumber;
+use BN\BN;
 
 class Utils
 {
@@ -193,6 +194,8 @@ class Utils
     {
         if ($number instanceof BigNumber){
             $bn = $number;
+        } elseif ($number instanceof BN) {
+            $bn = new BigNumber($number->toString());
         } elseif (is_int($number)) {
             $bn = new BigNumber($number);
         } elseif (is_numeric($number)) {
