@@ -30,14 +30,14 @@ class Key {
     {
         $keySeed = Utils::toBn($keySeed);
         $ecOrder = Utils::toBn(Constants::EC_ORDER);
-        $maskDivOrder = Constants::MASK_256()->divide($ecOrder);
-        $maxAllowedValue = Constants::MASK_256()->subtract($maskDivOrder[1]);
+        list(,$maskDivOrder) = Constants::MASK_256()->divide($ecOrder);
+        $maxAllowedValue = Constants::MASK_256()->subtract($maskDivOrder);
         for ($i=0; ; $i++) {
             $msg = str_pad($keySeed->toBytes() . Utils::toBn($i)->toBytes(), 33, "\0");
             $key = Utils::toBn(\hash('sha256', $msg, false));
             if ($key->compare($maxAllowedValue) < 0) {
-                $result = $key->divide($ecOrder);
-                return $result[1]->toHex();
+                list(,$result) = $key->divide($ecOrder);
+                return $result->toHex();
             }
             if ($i === 100000) {
                 throw new Exception('grindKey is broken: tried 100k vals');
@@ -48,15 +48,16 @@ class Key {
     /**
      * getPublicKey
      * 
-     * @param string $privateKey
+     * @param string $privateKey hex encode
      * @param bool $isCompressed
      * @param string $enc
      * @return string
      */
     public static function getPublicKey ($privateKey, $isCompressed = false, $enc = 'hex')
     {
+        $privateKey = Utils::stripZeroPrefix($privateKey);
         $ec = Curve::ec();
-        $keyPair = $ec->keyFromPrivate($privateKey);
+        $keyPair = $ec->keyFromPrivate(str_pad($privateKey, 64, '0', STR_PAD_LEFT));
         return $keyPair->getPublic($isCompressed, $enc);
     }
 
