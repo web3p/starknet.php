@@ -78,6 +78,50 @@ class TypedData
     }
 
     /**
+     * encodeField
+     * 
+     * @param array $types
+     * @param string $type
+     * @param mixed $value
+     * @return string
+     */
+    protected static function encodeField($types, $type, $value)
+    {
+        if (substr($type, 0, 1) === '*') {
+            // pointer
+            $type = substr($type, 1);
+            if (array_key_exists($type)) {
+                // struct
+                $result = [];
+                foreach ($value as $data) {
+                    $result[] = self::hashStruct(type, $data);
+                }
+                return '0x' . FastPedersenHash::computeHashOnElements($result)->toString(16);
+            }
+        }
+        return Utils::toHex($value, true);
+    }
+
+    /**
+     * encodeData
+     * 
+     * @param string $type
+     * @param array $types
+     * @param array $data
+     * @return string
+     */
+    public static function encodeData(string $type, array $types, array $data)
+    {
+        $encodedValues = [];
+        foreach ($types[$type] as $field) {
+            $value = self::encodeField($types, $field['type'], $data[$field['name']]);
+            $encodedValues[] = $value;
+        }
+
+        return $encodedValues;
+    }
+
+    /**
      * hashStruct
      * 
      * @param string $typeName
@@ -87,10 +131,9 @@ class TypedData
      */
     public static function hashStruct($typeName, $messageTypes, $message)
     {
-        return FastPedersenHash::computeHashOnElements(
-            self::hashType($typeName, $messageTypes),
-            0
-        );
+        return Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements(array_merge([
+            self::hashType($typeName, $messageTypes)
+        ], self::encodeData($typeName, $messageTypes, $message)))->toString(16));
     }
 
     /**
@@ -128,7 +171,7 @@ class TypedData
                 $domainTypes['StarkNetDomain'][] = $revision0Domain[$key];
             }
         }
-        return $this->hashStruct('StarkNetDomain', $domainTypes, $domainData);
+        return self::hashStruct('StarkNetDomain', $domainTypes, $domainData);
     }
 
     /**
@@ -147,6 +190,6 @@ class TypedData
             self::hashDomain($domain),
             $address
         ];
-        return FastPedersenHash::computeHashOnElements($message);
+        return Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements($message)->toString(16));
     }
 }
