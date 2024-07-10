@@ -123,6 +123,20 @@ class Utils
     }
 
     /**
+     * removeLeadingZero
+     * 
+     * @param string $value
+     * @return string
+     */
+    public static function removeLeadingZero($value)
+    {
+        if (!is_string($value)) {
+            throw new InvalidArgumentException('The value to removeLeadingZero function must be string.');
+        }
+        return preg_replace('/^0+/', '', $value);
+    }
+
+    /**
      * isNegative
      * 
      * @param string

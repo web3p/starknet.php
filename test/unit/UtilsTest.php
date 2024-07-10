@@ -107,6 +107,20 @@ class UtilsTest extends TestCase
     }
 
     /**
+     * testRemoveLeadingZero
+     * 
+     * @return void
+     */
+    public function testRemoveLeadingZero()
+    {
+        $result = Utils::removeLeadingZero('01234');
+        $this->assertEquals('1234', $result);
+
+        $this->expectException(InvalidArgumentException::class);
+        $result = Utils::removeLeadingZero(new stdClass);
+    }
+
+    /**
      * testStripZeroPrefix
      *
      * @return void
