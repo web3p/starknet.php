@@ -90,14 +90,18 @@ class TypedData
         if (substr($type, 0, 1) === '*') {
             // pointer
             $type = substr($type, 1);
-            if (array_key_exists($type)) {
+            if (array_key_exists($type, $types)) {
                 // struct
                 $result = [];
                 foreach ($value as $data) {
-                    $result[] = self::hashStruct(type, $data);
+                    $result[] = self::hashStruct($type, $data);
                 }
                 return '0x' . FastPedersenHash::computeHashOnElements($result)->toString(16);
             }
+        }
+        if (array_key_exists($type, $types)) {
+            // struct
+            return '0x' . self::hashStruct($type, $types, $value);
         }
         return Utils::toHex($value, true);
     }
@@ -179,16 +183,19 @@ class TypedData
      * 
      * @param array $domain
      * @param array $messageTypes
-     * @param array $typedData
+     * @param array $messageData
      * @param string $address
      * @return string
      */
-    public static function messageHash($domain, $messageTypes, $message, $address)
+    public static function messageHash($domain, $messageTypes, $messageData, $address)
     {
+        $types = array_keys($messageTypes);
+        $primaryType = $types[0];
         $message = [
             Felt::encodeShortString("StarkNet Message"),
             self::hashDomain($domain),
-            $address
+            $address,
+            self::hashStruct($primaryType, $messageTypes, $messageData)
         ];
         return Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements($message)->toString(16));
     }
