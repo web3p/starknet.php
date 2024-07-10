@@ -32,7 +32,7 @@ class Hash
      */
     public static function getSelectorFromName($name)
     {
-        return Utils::keccak($name);
+        return Utils::removeLeadingZero(Utils::keccak($name));
     }
 
     /**
