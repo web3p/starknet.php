@@ -10,3 +10,4 @@ Reference: https://github.com/Starknet-php/starknet.php
 * accept pedersen hash interface as parameter in hash.php
 * add poseidon hash
 * support revision 1 typed data
+* add more unit test
