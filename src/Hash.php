@@ -54,6 +54,6 @@ class Hash
             $classHash,
             $constructorDataHash
         ]);
-        return Utils::removeLeadingZero($rawAddress->mod(self::L2_ADDRESS_UPPER_BOUND())->toString(16));
+        return '0x' . Utils::removeLeadingZero($rawAddress->mod(self::L2_ADDRESS_UPPER_BOUND())->toString(16));
     }
 }

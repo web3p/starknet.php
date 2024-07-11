@@ -35,7 +35,7 @@ class HashTest extends TestCase
             ],
             1111
         );
-        $this->assertEquals('30018328ec720e778744bfeec50d93bad01215f53b7a09e7c8b724157c2d947', $result);
+        $this->assertEquals('0x30018328ec720e778744bfeec50d93bad01215f53b7a09e7c8b724157c2d947', $result);
 
         $result = Hash::computeAddress(
             '951442054899045155353616354734460058868858519055082696003992725251069061570',
@@ -46,6 +46,6 @@ class HashTest extends TestCase
             1111,
             1234
         );
-        $this->assertEquals('707c2720b9dc5fb42ff24eeef04ddff509fcf2f86371cbf9a344de8638bd4a8', $result);
+        $this->assertEquals('0x707c2720b9dc5fb42ff24eeef04ddff509fcf2f86371cbf9a344de8638bd4a8', $result);
     }
 }
