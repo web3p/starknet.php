@@ -13,6 +13,7 @@ namespace StarkNet\Crypto;
 use Elliptic\EC;
 use Elliptic\Curve\PresetCurve;
 use StarkNet\Constants;
+use StarkNet\Utils;
 
 class Curve
 {
@@ -58,12 +59,17 @@ class Curve
      */
     public static function sign(string $pk, string $message)
     {
-        $messageBn = Numbers::toBN(Encode::addHexPrefix($message));
-        assert($messageBn->compare(Constants::ZERO()) > 0 || $messageBn->compare(Constants::ZERO()) == 0, 'out of bound');
-        $ecdsa = Numbers::toBN(Encode::addHexPrefix(Constants::MAX_ECDSA_VAL));
-        assert($messageBn->compare($ecdsa) < 0 || $messageBn->compare($ecdsa) == 0, 'out of bound');
+        $messageBn = Utils::toBn('0x' . $message);
+        $cmpZero = $messageBn->compare(Constants::ZERO());
+        assert($messageBn->compare(Constants::ZERO()) >=0, 'out of bound');
+        $ecdsa = Utils::toBn('0x' . Constants::MAX_ECDSA_VAL);
+        $cmpEcdsa = $messageBn->compare($ecdsa);
+        assert($cmpEcdsa <= 0, 'out of bound');
         $signature = self::ec()->sign(self::fixHex($message), $pk);
-        return [$signature->r, $signature->s];
+        return [
+            Utils::removeLeadingZero($signature->r->toString(16)),
+            Utils::removeLeadingZero($signature->s->toString(16))
+        ];
     }
 
     /**
@@ -75,7 +81,7 @@ class Curve
      */
     public static function fixHex(string $hex)
     {
-        $hex = preg_replace('/^0x0*/', '', $hex);
+        $hex = preg_replace('/^(0x)?0+/', '', $hex);
         if (strlen($hex) <= 62) {
             return $hex;
         } elseif (strlen($hex) === 63) {
