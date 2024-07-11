@@ -52,7 +52,7 @@ class Utils
      */
     public static function toHex($value, $isPrefix=false)
     {
-        if (is_int($value) || is_float($value)) {
+        if (is_numeric($value)) {
             // turn to hex number
             $bn = self::toBn($value);
             $hex = $bn->toHex(true);

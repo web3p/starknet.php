@@ -157,12 +157,12 @@ class TypedData
                 'name' => 'name',
                 'type' => 'felt'
             ],
-            'version' => [
-                'name' => 'version',
-                'type' => 'felt'
-            ],
             'chainId' => [
                 'name' => 'chainId',
+                'type' => 'felt'
+            ],
+            'version' => [
+                'name' => 'version',
                 'type' => 'felt'
             ]
         ];

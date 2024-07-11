@@ -34,7 +34,7 @@ class Key {
         $maxAllowedValue = Constants::MASK_256()->subtract($maskDivOrder);
         for ($i=0; ; $i++) {
             $msg = str_pad($keySeed->toBytes() . Utils::toBn($i)->toBytes(), 33, "\0");
-            $key = Utils::toBn(\hash('sha256', $msg, false));
+            $key = Utils::toBn('0x' . \hash('sha256', $msg, false));
             if ($key->compare($maxAllowedValue) < 0) {
                 list(,$result) = $key->divide($ecOrder);
                 return $result->toHex();
