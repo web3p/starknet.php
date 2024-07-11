@@ -51,6 +51,24 @@ class Curve
     }
 
     /**
+     * constantPointsPedersen
+     * 
+     * @return array array of constant points for pedersen hash
+     */
+    public static function constantPointsPedersen()
+    {
+        $rawPoints = Constants::CONSTANT_POINTS;
+        $curve = self::ec()->curve;
+        $points = [];
+        $points[] = $curve->point($rawPoints[0][0], $rawPoints[0][1]);
+        $points[] = $curve->point($rawPoints[2][0], $rawPoints[2][1]);
+        $points[] = $curve->point($rawPoints[2 + Constants::LOW_PART_BITS][0], $rawPoints[2 + Constants::LOW_PART_BITS][1]);
+        $points[] = $curve->point($rawPoints[2 + Constants::N_ELEMENT_BITS_HASH][0], $rawPoints[2 + Constants::N_ELEMENT_BITS_HASH][1]);
+        $points[] = $curve->point($rawPoints[2 + Constants::LOW_PART_BITS + Constants::N_ELEMENT_BITS_HASH][0], $rawPoints[2 + Constants::LOW_PART_BITS + Constants::N_ELEMENT_BITS_HASH][1]);
+        return $points;
+    }
+
+    /**
      * sign
      * 
      * @param string $pk

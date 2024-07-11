@@ -19,8 +19,6 @@ use StarkNet\Crypto\Hash;
 class FastPedersenHash
 {
     use Hash;
-
-    public const LOW_PART_BITS = 248;
     
     // 2 ** 248 - 1
     public static function LOW_BITS_MASK()
@@ -40,7 +38,7 @@ class FastPedersenHash
     {
         $cmpZero = $element->compare(Constants::ZERO());
         assert($cmpZero >= 0 && $element->compare(Utils::toBn('0x' . Constants::FIELD_PRIME)) < 0, "Element value is out of range");
-        $highNibble = $element->bitwise_rightShift(self::LOW_PART_BITS)->toHex();
+        $highNibble = $element->bitwise_rightShift(Constants::LOW_PART_BITS)->toHex();
         $lowPart = $element->bitwise_and(self::LOW_BITS_MASK())->toHex();
         if ($highNibble === '') {
             $highNibble = '0';
@@ -63,12 +61,12 @@ class FastPedersenHash
     {
         $xBn = Utils::toBn($x);
         $yBn = Utils::toBn($y);
-        $points = Curve::constantPoints();
+        $points = Curve::constantPointsPedersen();
         $hashShiftPoint = $points[0];
-        $p0 = $points[2];
-        $p1 = $points[2 + self::LOW_PART_BITS];
-        $p2 = $points[2 + Constants::N_ELEMENT_BITS_HASH];
-        $p3 = $points[2 + self::LOW_PART_BITS + Constants::N_ELEMENT_BITS_HASH];
+        $p0 = $points[1];
+        $p1 = $points[2];
+        $p2 = $points[3];
+        $p3 = $points[4];
         return ($hashShiftPoint->add(self::processSingleElement($xBn, $p0, $p1))->add(self::processSingleElement($yBn, $p2, $p3)))->getX();
     }
 }
