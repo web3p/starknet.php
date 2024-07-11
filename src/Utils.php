@@ -58,6 +58,9 @@ class Utils
             $hex = $bn->toHex(true);
             $hex = preg_replace('/^0+(?!$)/', '', $hex);
         } elseif (is_string($value)) {
+            if (self::isZeroPrefixed($value)) {
+                return ($isPrefix) ? $value : self::stripZeroPrefix($value);
+            }
             $hex = implode('', unpack('H*', $value));
         } elseif ($value instanceof BigNumber) {
             $hex = $value->toHex(true);

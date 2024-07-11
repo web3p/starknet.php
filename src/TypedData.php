@@ -45,7 +45,11 @@ class TypedData
         foreach ($types[$type] as $field) {
             $subResult = self::findType($field['type'], $types);
             if (count($subResult) > 0) {
-                $result = array_merge($result, $subResult);
+                foreach ($subResult as $subType) {
+                    if (!in_array($subType, $result)) {
+                        $result[] = $subType;
+                    }
+                }
             }
         }
         return $result;
@@ -74,7 +78,7 @@ class TypedData
             }
             $result .= $type . '(' . implode(',', $params) . ')';
         }
-        return Hash::getSelectorFromName($result);
+        return '0x' . Hash::getSelectorFromName($result);
     }
 
     /**
@@ -94,14 +98,14 @@ class TypedData
                 // struct
                 $result = [];
                 foreach ($value as $data) {
-                    $result[] = self::hashStruct($type, $data);
+                    $result[] = self::hashStruct($type, $types, $data);
                 }
-                return '0x' . FastPedersenHash::computeHashOnElements($result)->toString(16);
+                return '0x' . Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements($result)->toString(16));
             }
         }
         if (array_key_exists($type, $types)) {
             // struct
-            return '0x' . self::hashStruct($type, $types, $value);
+            return self::hashStruct($type, $types, $value);
         }
         return Utils::toHex($value, true);
     }
@@ -135,7 +139,7 @@ class TypedData
      */
     public static function hashStruct($typeName, $messageTypes, $message)
     {
-        return Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements(array_merge([
+        return '0x' . Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements(array_merge([
             self::hashType($typeName, $messageTypes)
         ], self::encodeData($typeName, $messageTypes, $message)))->toString(16));
     }
@@ -153,12 +157,12 @@ class TypedData
                 'name' => 'name',
                 'type' => 'felt'
             ],
-            'chainId' => [
-                'name' => 'chainId',
-                'type' => 'felt'
-            ],
             'version' => [
                 'name' => 'version',
+                'type' => 'felt'
+            ],
+            'chainId' => [
+                'name' => 'chainId',
                 'type' => 'felt'
             ]
         ];
@@ -192,11 +196,11 @@ class TypedData
         $types = array_keys($messageTypes);
         $primaryType = $types[0];
         $message = [
-            Felt::encodeShortString("StarkNet Message"),
+            '0x' . Felt::encodeShortString("StarkNet Message"),
             self::hashDomain($domain),
             $address,
             self::hashStruct($primaryType, $messageTypes, $messageData)
         ];
-        return Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements($message)->toString(16));
+        return '0x' . Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements($message)->toString(16));
     }
 }
