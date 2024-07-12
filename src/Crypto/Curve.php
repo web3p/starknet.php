@@ -99,7 +99,8 @@ class Curve
      */
     public static function fixHex(string $hex)
     {
-        $hex = preg_replace('/^(0x)?0+/', '', $hex);
+        $hex = preg_replace('/^(0x)?0*/', '', $hex);
+        assert(is_string($hex), 'wrong input');
         if (strlen($hex) <= 62) {
             return $hex;
         } elseif (strlen($hex) === 63) {
