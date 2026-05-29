@@ -15,25 +15,6 @@ use StarkNet\Crypto\FastPedersenHash;
 class PedersenHashTest extends TestCase
 {
     /**
-     * $fixture
-     * 
-     * @var array
-     */
-    // protected $fixture;
-
-    /**
-     * setUp
-     * 
-     * @return void
-     */
-    // public function setUp(): void
-    // {
-    //     parent::setUp();
-    //     $f = file_get_contents( dirname(__DIR__) . '/fixtures/issue2.json');
-    //     $this->fixture = json_decode($f);
-    // }
-
-    /**
      * testHash
      * 
      * @return void
