@@ -10,7 +10,6 @@
 
 namespace StarkNet;
 
-use BN\BN;
 use StarkNet\Utils;
 use StarkNet\Crypto\FastPedersenHash;
 
@@ -21,7 +20,8 @@ class Hash
     public static function L2_ADDRESS_UPPER_BOUND()
     {
         // 2**251 - 256
-        return new BN('3618502788666131106986593281521497120414687020801267626233049500247285300992');
+        // return new BN('3618502788666131106986593281521497120414687020801267626233049500247285300992');
+        return Utils::toBN('3618502788666131106986593281521497120414687020801267626233049500247285300992');
     }
 
     /**
@@ -54,6 +54,6 @@ class Hash
             $classHash,
             $constructorDataHash
         ]);
-        return '0x' . Utils::removeLeadingZero($rawAddress->mod(self::L2_ADDRESS_UPPER_BOUND())->toString(16));
+        return '0x' . Utils::removeLeadingZero($rawAddress->divide(self::L2_ADDRESS_UPPER_BOUND())[1]->toHex());
     }
 }

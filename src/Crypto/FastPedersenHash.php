@@ -67,6 +67,6 @@ class FastPedersenHash
         $p1 = $points[2];
         $p2 = $points[3];
         $p3 = $points[4];
-        return ($hashShiftPoint->add(self::processSingleElement($xBn, $p0, $p1))->add(self::processSingleElement($yBn, $p2, $p3)))->getX();
+        return Utils::toBN(($hashShiftPoint->add(self::processSingleElement($xBn, $p0, $p1))->add(self::processSingleElement($yBn, $p2, $p3)))->getX());
     }
 }

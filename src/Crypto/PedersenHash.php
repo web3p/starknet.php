@@ -52,6 +52,6 @@ class PedersenHash
                 $x = $x->bitwise_rightShift(1);
             }
         }
-        return $point->getX();
+        return Utils::toBN($point->getX());
     }
 }
