@@ -31,7 +31,7 @@ class Felt
             throw new InvalidArgumentException('The value to assertInCairoVMRange function in not support.');
         }
         if (
-            !($value->compare(Constants::ZERO()) >= 0 && $value->compare(Utils::toBn(Constants::FIELD_PRIME)) < 0)
+            !($value->compare(Constants::ZERO()) >= 0 && $value->compare(Utils::toBn('0x' . Constants::FIELD_PRIME)) < 0)
         ) {
             throw new InvalidArgumentException('The value in expected to be in the range [0,' . Constants::FIELD_PRIME . '].');
         }
