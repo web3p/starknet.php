@@ -10,7 +10,6 @@
 
 namespace StarkNet;
 
-use BN\BN;
 use StarkNet\Utils;
 use StarkNet\Crypto\FastPedersenHash;
 use StarkNet\Cairo\Felt;
@@ -100,7 +99,7 @@ class TypedData
                 foreach ($value as $data) {
                     $result[] = self::hashStruct($type, $types, $data);
                 }
-                return '0x' . Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements($result)->toString(16));
+                return '0x' . Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements($result)->toHex());
             }
         }
         if (array_key_exists($type, $types)) {
@@ -141,7 +140,7 @@ class TypedData
     {
         return '0x' . Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements(array_merge([
             self::hashType($typeName, $messageTypes)
-        ], self::encodeData($typeName, $messageTypes, $message)))->toString(16));
+        ], self::encodeData($typeName, $messageTypes, $message)))->toHex());
     }
 
     /**
@@ -201,6 +200,6 @@ class TypedData
             $address,
             self::hashStruct($primaryType, $messageTypes, $messageData)
         ];
-        return '0x' . Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements($message)->toString(16));
+        return '0x' . Utils::removeLeadingZero(FastPedersenHash::computeHashOnElements($message)->toHex());
     }
 }
